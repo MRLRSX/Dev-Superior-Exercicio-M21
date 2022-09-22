@@ -15,9 +15,10 @@ import model.Seller;
 public class Program_01 {
     
 	
-	public static void main(String[] args) throws ParseException, SQLException {
+	public static void main(String[] args) throws ParseException{
 	  Connection conn = null;
 	  PreparedStatement st = null;
+	  ResultSet rs = null;
 	  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
 	  Seller seller = new Seller(null, "Vicente Rocha", "vicenterochajp@gmail.com.br", LocalDateTime.now(), 5000.00, 1);
 	  try {
@@ -32,7 +33,7 @@ public class Program_01 {
 		  int rowsAffected = st.executeUpdate();
 		  
 		  if(rowsAffected > 0) {
-			  ResultSet rs = st.getGeneratedKeys();
+			  rs = st.getGeneratedKeys();
 			  while(rs.next()) {
 				  int id = rs.getInt(1);
 				  System.out.println("Done! id: "+ id);
@@ -45,7 +46,8 @@ public class Program_01 {
 		  error.printStackTrace();
 	  }finally {
 		  ConexaoDB.closeStatement(st);
-		  conn.close();
+		  ConexaoDB.closeResultSet(rs);
+		  ConexaoDB.closeConnection();
 	  }
 	}
 }
